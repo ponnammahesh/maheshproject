@@ -1,0 +1,21 @@
+import org.apache.spark.sql.SparkSession
+object test2 {
+
+ def main(args:Array[String]):Unit={
+    val spark = SparkSession.builder()
+      .master("local[1]")
+      .appName("salarydata")
+      .getOrCreate()
+      
+      var df=spark.read.option("header",true).csv("C:\\Users\\p.mahesh\\Desktop\\big data\\assignment\\Employee_monthly_salary.csv")
+      df.show()          
+        
+        println("TOP 10 salaries for each department of the Employee_monthly_salary table using analytical function ")
+        val findf = spark.sql("""select * from ( select e.*, DENSE_RANK() over 
+        (partition by Department order by FEBRUARY_GROSS DESC) 
+        Row_Number from Employee_monthly_salary e ) 
+        where Row_Number <=10 """)
+        .show()
+}
+}
+ 

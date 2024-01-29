@@ -1,0 +1,19 @@
+import org.apache.spark.sql.SparkSession
+object test2 {
+
+ def main(args:Array[String]):Unit={
+    val spark = SparkSession.builder()
+      .master("local[1]")
+      .appName("salarydata")
+      .getOrCreate()
+      
+      var df=spark.read.option("header",true).csv("C:\\Users\\p.mahesh\\Desktop\\big data\\assignment\\Employee_monthly_salary.csv")
+      df.show()         
+      
+      df.write.mode("overWrite").format("parquet").save("C:\\Users\\p.mahesh\\Desktop\\big data\\result\\test")
+      val df = spark.read.option("header",true).csv("C:\\Users\\p.mahesh\\Desktop\\big data\\assignment\\zipcode.csv")
+      val maxZipDF = df.groupBy("city").agg(max.("zip").as("max_zip"))
+      maxZipDF.write.option("header",true).csv("C:\\Users\\p.mahesh\\Desktop\\big data\\output file")
+     
+}
+}

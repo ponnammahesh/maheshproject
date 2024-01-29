@@ -1,0 +1,21 @@
+import org.apache.spark.sql.SparkSession
+object test2 {
+
+ def main(args:Array[String]):Unit={
+    val spark = SparkSession.builder()
+      .master("local[1]")
+      .appName("salarydata")
+      .getOrCreate()
+      
+      var df=spark.read.option("header",true).csv("C:\\Users\\p.mahesh\\Desktop\\big data\\assignment\\Employee_monthly_salary.csv")
+      df.show()      
+     
+      
+      val original = df.dropDuplicates()
+      val duplicates = df.except(original)
+      original.write.mode("overWrite").option("header",true).csv("C:\\Users\\p.mahesh\\Desktop\\big data\\result\\test1")
+      duplicates.write.mode("overWrite").option("header",true).csv("C:\\Users\\p.mahesh\\Desktop\\big data\\result\\test2")
+      
+     
+}
+}
